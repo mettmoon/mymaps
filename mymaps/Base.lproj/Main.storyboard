@@ -18,13 +18,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CvQ-Pj-vcR">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="567"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="zsX-0i-CwZ"/>
                                 </connections>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HYJ-gM-NEc" userLabel="Vertical Line">
-                                <rect key="frame" x="187" y="0.0" width="1" height="567"/>
+                                <rect key="frame" x="187" y="0.0" width="1" height="667"/>
                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="0.5" id="tEe-Q0-szs"/>
@@ -40,7 +40,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ly-4W-mru">
                                 <rect key="frame" x="295" y="20" width="80" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="3TQ-Fv-eUn"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="3TQ-Fv-eUn"/>
                                     <constraint firstAttribute="height" constant="50" id="Qka-SZ-b8X"/>
                                 </constraints>
                                 <state key="normal" title="그리기"/>
@@ -50,6 +50,7 @@
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="RRf-Rr-Q8o">
                                 <rect key="frame" x="0.0" y="567" width="375" height="100"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="mTJ-LC-yMu"/>
                                 </constraints>
@@ -92,7 +93,7 @@
                                 <rect key="frame" x="215" y="20" width="80" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="iOE-fQ-LsN"/>
-                                    <constraint firstAttribute="width" constant="80" id="l5o-ct-x9a"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="l5o-ct-x9a"/>
                                 </constraints>
                                 <state key="normal" title="내 위치"/>
                                 <connections>
@@ -104,7 +105,6 @@
                         <constraints>
                             <constraint firstItem="CvQ-Pj-vcR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="87c-F5-eo9"/>
                             <constraint firstItem="HYJ-gM-NEc" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="BOq-6h-lNR"/>
-                            <constraint firstItem="RRf-Rr-Q8o" firstAttribute="top" secondItem="CvQ-Pj-vcR" secondAttribute="bottom" id="Dq7-Le-15g"/>
                             <constraint firstItem="9ly-4W-mru" firstAttribute="leading" secondItem="8VC-ei-uqo" secondAttribute="trailing" id="Fj0-Ff-qP9"/>
                             <constraint firstItem="nAo-5b-4Gv" firstAttribute="top" secondItem="CvQ-Pj-vcR" secondAttribute="top" id="FsW-R3-DEf"/>
                             <constraint firstItem="CvQ-Pj-vcR" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Ggl-md-lgq"/>
@@ -118,6 +118,8 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9ly-4W-mru" secondAttribute="trailing" id="dW0-nu-dfu"/>
                             <constraint firstItem="CvQ-Pj-vcR" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="lqH-T3-cbc"/>
                             <constraint firstItem="RRf-Rr-Q8o" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="nIx-Qh-zIs"/>
+                            <constraint firstItem="8VC-ei-uqo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="rDo-cr-ssv"/>
+                            <constraint firstAttribute="bottom" secondItem="CvQ-Pj-vcR" secondAttribute="bottom" id="sSz-Xx-sXg"/>
                             <constraint firstItem="RRf-Rr-Q8o" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="umC-MB-bxu"/>
                             <constraint firstItem="HYJ-gM-NEc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v66-52-XYR"/>
                         </constraints>

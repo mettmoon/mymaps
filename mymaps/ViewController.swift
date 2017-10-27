@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Fuzi
 
 class ViewController: UIViewController{
     var pins:[MMPin] = []
@@ -50,6 +51,71 @@ class ViewController: UIViewController{
         self.pinCollectionView.reloadData()
         self.coordinates = []
         self.updateDrawButton()
+        let coordinates = self.loadGPX()
+        let polyline = MMPolyline(coordinates: coordinates, count: coordinates.count)
+        polyline.lineWidth = 2
+        polyline.color = .blue
+        mapView.add(polyline)
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.newGPXFile, object: nil, queue: .main) { (noti) in
+            guard let url = noti.object as? URL else{return}
+            let coordinates = self.loadGPX(fileURL: url)
+            let polyline = MMPolyline(coordinates: coordinates, count: coordinates.count)
+            polyline.lineWidth = 2
+            polyline.color = .red
+            self.mapView.add(polyline)
+        }
+    }
+    func loadGPX(fileURL:URL? = nil) -> [CLLocationCoordinate2D]{
+        var fileURL = fileURL
+        if fileURL == nil {
+            fileURL = Bundle.main.url(forResource: "test", withExtension: "gpx")
+        }
+        guard let url = fileURL else{return []}
+        let xml = try! String(contentsOf: url, encoding:.utf8)
+        var coordinates:[CLLocationCoordinate2D] = []
+        do {
+            // if encoding is omitted, it defaults to NSUTF8StringEncoding
+            let document = try XMLDocument(string: xml, encoding: .utf8)
+            
+            if let root = document.root {
+                
+                //                print(root.tag)
+                
+                // define a prefix for a namespace
+                //                document.definePrefix("xml", defaultNamespace: "http://www.topografix.com/GPX/1/1")
+                
+                // get first child element with given tag in namespace(optional)
+                guard let tracks = root.firstChild(tag: "trk")?.firstChild(tag: "trkseg")?.children(tag: "trkpt") else{return coordinates}
+                let numberFormatter = NumberFormatter()
+                for track in tracks {
+                    var logMessage:String = ""
+                    if let lat = track.attr("lat"), let lon = track.attr("lon")
+                        , let latNum = numberFormatter.number(from: lat)
+                        , let lonNum = numberFormatter.number(from: lon)
+                    {
+                        let coordinate = CLLocationCoordinate2D(latitude: latNum.doubleValue, longitude: lonNum.doubleValue)
+                        coordinates.append(coordinate)
+                        logMessage += "lat:\(lat), lon:\(lon)"
+                    }
+                    if let time = track.firstChild(tag: "time") {
+                        logMessage += "(\(time))"
+                    }
+                    print(logMessage)
+                }
+            }
+            // you can also use CSS selector against XMLDocument when you feels it makes sense
+        } catch let error as XMLError {
+            switch error {
+            case .noError: print("wth this should not appear")
+            case .parserFailure, .invalidData: print(error)
+            case .libXMLError(let code, let message):
+                print("libxml error code: \(code), message: \(message)")
+            }
+        }catch {
+            print(error)
+        }
+        return coordinates
     }
     
     func loadPins() -> [MMPin]{
@@ -62,12 +128,6 @@ class ViewController: UIViewController{
         pins.append(MMPin(name: "Hotel", iconString: "🏨"))
         return pins
         
-    }
-    func drawPolyline(){
-        guard let coordinates = self.coordinates, coordinates.count > 1 else {return}
-        let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
-        self.coordinates?.remove(at: 0)
-        mapView.add(polyline)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -95,7 +155,12 @@ class ViewController: UIViewController{
         let point = touch.location(in: self.mapView)
         let coordinate = self.mapView.convert(point, toCoordinateFrom: self.mapView)
         self.coordinates?.append(coordinate)
-        self.drawPolyline()
+        if let coordinates = self.coordinates, coordinates.count > 1 {
+            let polyline = MKPolyline(coordinates: [coordinates[0],coordinates[1]], count: 2)
+            self.mapView.add(polyline)
+            self.coordinates?.remove(at: 0)
+        }
+
 
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -114,8 +179,13 @@ extension ViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(overlay: overlay)
-            renderer.strokeColor = UIColor.orange
-            renderer.lineWidth = 3
+            if let overlay = overlay as? MMPolyline {
+                renderer.strokeColor = overlay.color
+                renderer.lineWidth = overlay.lineWidth
+            }else{
+                renderer.strokeColor = UIColor.orange
+                renderer.lineWidth = 3
+            }
             return renderer
         }
         return MKOverlayRenderer()
@@ -163,6 +233,10 @@ extension ViewController : MKMapViewDelegate {
     }
     
 
+}
+class MMPolyline:MKPolyline {
+    var color:UIColor = .orange
+    var lineWidth:CGFloat = 3
 }
 class MMAnnotation:NSObject, MKAnnotation {
     var pin:MMPin
