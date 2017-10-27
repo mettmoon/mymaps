@@ -11,7 +11,7 @@
 		364AAC881FA2CAAF00FF2953 /* PinCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AAC871FA2CAAF00FF2953 /* PinCollectionViewCell.swift */; };
 		364AAC8B1FA2DFE600FF2953 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364AAC8A1FA2DFE600FF2953 /* CoreFoundation.framework */; };
 		364AAC8D1FA2DFF800FF2953 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364AAC8C1FA2DFF800FF2953 /* Foundation.framework */; };
-		3684A0061FA300D200D16DC8 /* test.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 3684A0051FA2FDD400D16DC8 /* test.gpx */; };
+		3684A00A1FA3260600D16DC8 /* WaypointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3684A0091FA3260600D16DC8 /* WaypointModel.swift */; };
 		D005A0DA1FA2128900AFC56D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D005A0D91FA2128900AFC56D /* AppDelegate.swift */; };
 		D005A0DC1FA2128900AFC56D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D005A0DB1FA2128900AFC56D /* ViewController.swift */; };
 		D005A0DF1FA2128900AFC56D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D005A0DD1FA2128900AFC56D /* Main.storyboard */; };
@@ -25,7 +25,7 @@
 		364AAC891FA2D54900FF2953 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bridge.h; sourceTree = "<group>"; };
 		364AAC8A1FA2DFE600FF2953 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		364AAC8C1FA2DFF800FF2953 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		3684A0051FA2FDD400D16DC8 /* test.gpx */ = {isa = PBXFileReference; lastKnownFileType = text; name = test.gpx; path = ../../../../../Desktop/test.gpx; sourceTree = "<group>"; };
+		3684A0091FA3260600D16DC8 /* WaypointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointModel.swift; sourceTree = "<group>"; };
 		847F9BC0659345035CD87860 /* Pods_mymaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mymaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA72B3265CCECA0FD0355501 /* Pods-mymaps.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mymaps.release.xcconfig"; path = "Pods/Target Support Files/Pods-mymaps/Pods-mymaps.release.xcconfig"; sourceTree = "<group>"; };
 		D005A0D61FA2128900AFC56D /* mymaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mymaps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,10 +91,10 @@
 		D005A0D81FA2128900AFC56D /* mymaps */ = {
 			isa = PBXGroup;
 			children = (
-				3684A0051FA2FDD400D16DC8 /* test.gpx */,
 				D005A0D91FA2128900AFC56D /* AppDelegate.swift */,
 				D005A0DB1FA2128900AFC56D /* ViewController.swift */,
 				364AAC871FA2CAAF00FF2953 /* PinCollectionViewCell.swift */,
+				3684A0091FA3260600D16DC8 /* WaypointModel.swift */,
 				364AAC891FA2D54900FF2953 /* Bridge.h */,
 				D005A0DD1FA2128900AFC56D /* Main.storyboard */,
 				D005A0E01FA2128900AFC56D /* Assets.xcassets */,
@@ -167,7 +167,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D005A0E41FA2128900AFC56D /* LaunchScreen.storyboard in Resources */,
-				3684A0061FA300D200D16DC8 /* test.gpx in Resources */,
 				D005A0E11FA2128900AFC56D /* Assets.xcassets in Resources */,
 				D005A0DF1FA2128900AFC56D /* Main.storyboard in Resources */,
 			);
@@ -216,12 +215,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-mymaps/Pods-mymaps-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FileBrowser/FileBrowser.framework",
 				"${BUILT_PRODUCTS_DIR}/Fuzi/Fuzi.framework",
 				"${BUILT_PRODUCTS_DIR}/TBXML/TBXML.framework",
 				"${BUILT_PRODUCTS_DIR}/iOS-GPX-Framework/iOS_GPX_Framework.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FileBrowser.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Fuzi.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TBXML.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iOS_GPX_Framework.framework",
@@ -240,6 +241,7 @@
 			files = (
 				D005A0DC1FA2128900AFC56D /* ViewController.swift in Sources */,
 				D005A0DA1FA2128900AFC56D /* AppDelegate.swift in Sources */,
+				3684A00A1FA3260600D16DC8 /* WaypointModel.swift in Sources */,
 				364AAC881FA2CAAF00FF2953 /* PinCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

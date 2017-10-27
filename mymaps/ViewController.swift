@@ -10,13 +10,44 @@ import UIKit
 import MapKit
 import CoreLocation
 import Fuzi
+import FileBrowser
 
 class ViewController: UIViewController{
     var pins:[MMPin] = []
+    var savedAnnotation:[MMAnnotation] = []
     @IBOutlet weak var myLocationButton: UIButton!
     @IBOutlet weak var pinCollectionView: UICollectionView!
     @IBOutlet weak var verticalLineLC: NSLayoutConstraint!
     var locationManager:CLLocationManager?
+    var fileBrowser = FileBrowser()
+    @IBAction func loadFileAction(_ sender: Any) {
+        present(fileBrowser, animated: true, completion: nil)
+        fileBrowser.didSelectFile = { (file: FBFile) -> Void in
+            self.loadExternalGPXFile(url: file.filePath)
+        }
+
+    }
+    var pinnedPins:[MMAnnotation] {
+        return self.mapView.annotations.flatMap({$0 as? MMAnnotation})
+    }
+    @IBAction func saveAllPinAction(_ sender: Any) {
+        var xmlString:String = "<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" creator=\"MotionXGPSFull 24.2 Build 5063R64\">\n"
+        xmlString += "<trk>\n"
+        let dateFormatter = DateFormatter()
+        xmlString += "<name>\(dateFormatter.string(from: Date()))</name>\n"
+        xmlString += "<desc></desc>"
+        var waypoints:[Waypoint] = []
+        for annotation in self.pinnedPins {
+            let waypoint = Waypoint(coordinate: annotation.coordinate, date: annotation.pinnedDate, name: annotation.title ?? "", desc: nil, type: WaypointType(name: annotation.pin.name))
+            xmlString += waypoint.gpxString()
+            xmlString += "\n"
+        }
+        xmlString += "</trk></gpx>"
+        
+        
+        
+        
+    }
     @IBAction func myLocationButtonAction(_ sender: Any) {
         if CLLocationManager.authorizationStatus() == .notDetermined {
             let locationManager = CLLocationManager()
@@ -51,27 +82,32 @@ class ViewController: UIViewController{
         self.pinCollectionView.reloadData()
         self.coordinates = []
         self.updateDrawButton()
-        let coordinates = self.loadGPX()
-        let polyline = MMPolyline(coordinates: coordinates, count: coordinates.count)
-        polyline.lineWidth = 2
-        polyline.color = .blue
-        mapView.add(polyline)
+        if let coordinates = self.loadGPX() {
+            let polyline = MMPolyline(coordinates: coordinates, count: coordinates.count)
+            polyline.lineWidth = 2
+            polyline.color = .blue
+            mapView.add(polyline)
+        }
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name.newGPXFile, object: nil, queue: .main) { (noti) in
             guard let url = noti.object as? URL else{return}
-            let coordinates = self.loadGPX(fileURL: url)
-            let polyline = MMPolyline(coordinates: coordinates, count: coordinates.count)
-            polyline.lineWidth = 2
-            polyline.color = .red
-            self.mapView.add(polyline)
+            self.loadExternalGPXFile(url: url)
         }
     }
-    func loadGPX(fileURL:URL? = nil) -> [CLLocationCoordinate2D]{
+    func loadExternalGPXFile(url:URL){
+        guard let coordinates = self.loadGPX(fileURL: url) else{return}
+        let polyline = MMPolyline(coordinates: coordinates, count: coordinates.count)
+        polyline.lineWidth = 2
+        polyline.color = .red
+        self.mapView.add(polyline)
+
+    }
+    func loadGPX(fileURL:URL? = nil) -> [CLLocationCoordinate2D]?{
         var fileURL = fileURL
         if fileURL == nil {
             fileURL = Bundle.main.url(forResource: "test", withExtension: "gpx")
         }
-        guard let url = fileURL else{return []}
+        guard let url = fileURL else{return nil}
         let xml = try! String(contentsOf: url, encoding:.utf8)
         var coordinates:[CLLocationCoordinate2D] = []
         do {
@@ -86,7 +122,7 @@ class ViewController: UIViewController{
                 //                document.definePrefix("xml", defaultNamespace: "http://www.topografix.com/GPX/1/1")
                 
                 // get first child element with given tag in namespace(optional)
-                guard let tracks = root.firstChild(tag: "trk")?.firstChild(tag: "trkseg")?.children(tag: "trkpt") else{return coordinates}
+                guard let tracks = root.firstChild(tag: "trk")?.firstChild(tag: "trkseg")?.children(tag: "trkpt") else{return nil}
                 let numberFormatter = NumberFormatter()
                 for track in tracks {
                     var logMessage:String = ""
@@ -243,11 +279,13 @@ class MMAnnotation:NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
     var title: String?
     var subTitle: String?
+    var pinnedDate:Date
     init(pin:MMPin, coordinate:CLLocationCoordinate2D, title:String?, subTitle:String?) {
         self.pin = pin
         self.coordinate = coordinate
         self.title = title
         self.subTitle = subTitle
+        self.pinnedDate = Date()
     }
 }
 extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource {
@@ -263,7 +301,7 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let pin = self.pins[indexPath.row]
-        let annotation = MMAnnotation(pin: pin, coordinate: self.mapView.convert(self.mapView.center, toCoordinateFrom: self.mapView), title: pin.name, subTitle: nil)
+        let annotation = MMAnnotation(pin: pin, coordinate: self.mapView.convert(self.mapView.center, toCoordinateFrom: self.mapView), title: pin.name + String(pinnedPins.count + 1), subTitle: nil)
         mapView.addAnnotation(annotation)
     }
 }
