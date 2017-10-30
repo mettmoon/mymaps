@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0FEA99E3F16AC028C95DB99D /* Pods_mymaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847F9BC0659345035CD87860 /* Pods_mymaps.framework */; };
+		362B379E1FA6BAD700CAE322 /* GPXModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B379D1FA6BAD700CAE322 /* GPXModel.swift */; };
+		362B37A01FA6BB1600CAE322 /* xmlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B379F1FA6BB1600CAE322 /* xmlProtocol.swift */; };
 		364AAC881FA2CAAF00FF2953 /* PinCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AAC871FA2CAAF00FF2953 /* PinCollectionViewCell.swift */; };
 		364AAC8B1FA2DFE600FF2953 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364AAC8A1FA2DFE600FF2953 /* CoreFoundation.framework */; };
 		364AAC8D1FA2DFF800FF2953 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364AAC8C1FA2DFF800FF2953 /* Foundation.framework */; };
@@ -21,6 +23,8 @@
 
 /* Begin PBXFileReference section */
 		2EE5462A8CC1554B9D2C7C6D /* Pods-mymaps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mymaps.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mymaps/Pods-mymaps.debug.xcconfig"; sourceTree = "<group>"; };
+		362B379D1FA6BAD700CAE322 /* GPXModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXModel.swift; sourceTree = "<group>"; };
+		362B379F1FA6BB1600CAE322 /* xmlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = xmlProtocol.swift; sourceTree = "<group>"; };
 		364AAC871FA2CAAF00FF2953 /* PinCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCollectionViewCell.swift; sourceTree = "<group>"; };
 		364AAC891FA2D54900FF2953 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bridge.h; sourceTree = "<group>"; };
 		364AAC8A1FA2DFE600FF2953 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -94,7 +98,9 @@
 				D005A0D91FA2128900AFC56D /* AppDelegate.swift */,
 				D005A0DB1FA2128900AFC56D /* ViewController.swift */,
 				364AAC871FA2CAAF00FF2953 /* PinCollectionViewCell.swift */,
+				362B379D1FA6BAD700CAE322 /* GPXModel.swift */,
 				3684A0091FA3260600D16DC8 /* WaypointModel.swift */,
+				362B379F1FA6BB1600CAE322 /* xmlProtocol.swift */,
 				364AAC891FA2D54900FF2953 /* Bridge.h */,
 				D005A0DD1FA2128900AFC56D /* Main.storyboard */,
 				D005A0E01FA2128900AFC56D /* Assets.xcassets */,
@@ -239,10 +245,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				362B379E1FA6BAD700CAE322 /* GPXModel.swift in Sources */,
 				D005A0DC1FA2128900AFC56D /* ViewController.swift in Sources */,
 				D005A0DA1FA2128900AFC56D /* AppDelegate.swift in Sources */,
 				3684A00A1FA3260600D16DC8 /* WaypointModel.swift in Sources */,
 				364AAC881FA2CAAF00FF2953 /* PinCollectionViewCell.swift in Sources */,
+				362B37A01FA6BB1600CAE322 /* xmlProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

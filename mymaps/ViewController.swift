@@ -31,23 +31,48 @@ class ViewController: UIViewController{
         return self.mapView.annotations.flatMap({$0 as? MMAnnotation})
     }
     @IBAction func saveAllPinAction(_ sender: Any) {
-        var xmlString:String = "<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" creator=\"MotionXGPSFull 24.2 Build 5063R64\">\n"
-        xmlString += "<trk>\n"
+        var gpx = GPX()
         let dateFormatter = DateFormatter()
-        xmlString += "<name>\(dateFormatter.string(from: Date()))</name>\n"
-        xmlString += "<desc></desc>"
+        dateFormatter.dateStyle = .full
+        dateFormatter.timeStyle = .full
+        let name = dateFormatter.string(from: Date())
+        gpx.name = name
+        gpx.desc = ""
         var waypoints:[Waypoint] = []
         for annotation in self.pinnedPins {
             let waypoint = Waypoint(coordinate: annotation.coordinate, date: annotation.pinnedDate, name: annotation.title ?? "", desc: nil, type: WaypointType(name: annotation.pin.name))
-            xmlString += waypoint.gpxString()
-            xmlString += "\n"
+            waypoints.append(waypoint)
         }
-        xmlString += "</trk></gpx>"
+        gpx.waypoints = waypoints
+        print(gpx.getXMLString())
+        if let url = self.exportToFileURL(gpx: gpx) {
+            let urlObjectsToShare = [url]
+            let activityVc = UIActivityViewController(activityItems: urlObjectsToShare, applicationActivities: nil)
+            activityVc.popoverPresentationController?.sourceView = sender as? UIButton
+            self.present(activityVc, animated: true, completion: nil)
+        }
         
-        
+
         
         
     }
+    func exportToFileURL(gpx:GPX) -> URL? {
+        guard let path = FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask).first else {
+                return nil
+        }
+        
+        let saveFileURL = path.appendingPathComponent("gpx.gpx")
+        do {
+        try gpx.getXMLString().write(to: saveFileURL, atomically: true, encoding:String.Encoding.utf8)
+            return saveFileURL
+        }catch {
+            NSLog("save file error")
+            return nil
+        }
+    }
+
+    
     @IBAction func myLocationButtonAction(_ sender: Any) {
         if CLLocationManager.authorizationStatus() == .notDetermined {
             let locationManager = CLLocationManager()
@@ -301,7 +326,10 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let pin = self.pins[indexPath.row]
-        let annotation = MMAnnotation(pin: pin, coordinate: self.mapView.convert(self.mapView.center, toCoordinateFrom: self.mapView), title: pin.name + String(pinnedPins.count + 1), subTitle: nil)
+        let count = pinnedPins.filter { (annotation) -> Bool in
+            return annotation.pin.name == pin.name
+        }.count
+        let annotation = MMAnnotation(pin: pin, coordinate: self.mapView.convert(self.mapView.center, toCoordinateFrom: self.mapView), title: pin.name + String(count + 1), subTitle: nil)
         mapView.addAnnotation(annotation)
     }
 }
