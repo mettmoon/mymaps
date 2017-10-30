@@ -32,10 +32,7 @@ class ViewController: UIViewController{
     }
     @IBAction func saveAllPinAction(_ sender: Any) {
         var gpx = GPX()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .full
-        dateFormatter.timeStyle = .full
-        let name = dateFormatter.string(from: Date())
+        let name = Date().iso8601
         gpx.name = name
         gpx.desc = ""
         var waypoints:[Waypoint] = []
@@ -44,6 +41,9 @@ class ViewController: UIViewController{
             waypoints.append(waypoint)
         }
         gpx.waypoints = waypoints
+        for polyline in self.coordinates ?? [] {
+            
+        }
         print(gpx.getXMLString())
         if let url = self.exportToFileURL(gpx: gpx) {
             let urlObjectsToShare = [url]
@@ -217,9 +217,9 @@ class ViewController: UIViewController{
         let coordinate = self.mapView.convert(point, toCoordinateFrom: self.mapView)
         self.coordinates?.append(coordinate)
         if let coordinates = self.coordinates, coordinates.count > 1 {
-            let polyline = MKPolyline(coordinates: [coordinates[0],coordinates[1]], count: 2)
+            let count = 2
+            let polyline = MKPolyline(coordinates: Array(coordinates.suffix(from: count)), count: count)
             self.mapView.add(polyline)
-            self.coordinates?.remove(at: 0)
         }
 
 
@@ -353,3 +353,13 @@ extension String {
     
 }
 
+public extension MKPolyline {
+    public var coordinates: [CLLocationCoordinate2D] {
+        var coords = [CLLocationCoordinate2D](repeating: kCLLocationCoordinate2DInvalid,
+                                              count: self.pointCount)
+        
+        self.getCoordinates(&coords, range: NSRange(location: 0, length: self.pointCount))
+        
+        return coords
+    }
+}
