@@ -8,10 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		0FEA99E3F16AC028C95DB99D /* Pods_mymaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847F9BC0659345035CD87860 /* Pods_mymaps.framework */; };
-		3638A4F21FA72ACB00B10650 /* GPX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3638A4F11FA72ACB00B10650 /* GPX.swift */; };
 		364AAC881FA2CAAF00FF2953 /* PinCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AAC871FA2CAAF00FF2953 /* PinCollectionViewCell.swift */; };
 		364AAC8B1FA2DFE600FF2953 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364AAC8A1FA2DFE600FF2953 /* CoreFoundation.framework */; };
 		364AAC8D1FA2DFF800FF2953 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364AAC8C1FA2DFF800FF2953 /* Foundation.framework */; };
+		36D2C04E1FA853BA00503A64 /* GPXModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B379D1FA6BAD700CAE322 /* GPXModel.swift */; };
+		36D2C04F1FA853BA00503A64 /* WaypointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3684A0091FA3260600D16DC8 /* WaypointModel.swift */; };
+		36D2C0501FA853BA00503A64 /* TrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3638A4EF1FA7287200B10650 /* TrackModel.swift */; };
+		36D2C0511FA853BA00503A64 /* xmlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B379F1FA6BB1600CAE322 /* xmlProtocol.swift */; };
 		D005A0DA1FA2128900AFC56D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D005A0D91FA2128900AFC56D /* AppDelegate.swift */; };
 		D005A0DC1FA2128900AFC56D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D005A0DB1FA2128900AFC56D /* ViewController.swift */; };
 		D005A0DF1FA2128900AFC56D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D005A0DD1FA2128900AFC56D /* Main.storyboard */; };
@@ -247,10 +250,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36D2C04F1FA853BA00503A64 /* WaypointModel.swift in Sources */,
+				36D2C0501FA853BA00503A64 /* TrackModel.swift in Sources */,
 				D005A0DC1FA2128900AFC56D /* ViewController.swift in Sources */,
+				36D2C04E1FA853BA00503A64 /* GPXModel.swift in Sources */,
+				36D2C0511FA853BA00503A64 /* xmlProtocol.swift in Sources */,
 				D005A0DA1FA2128900AFC56D /* AppDelegate.swift in Sources */,
 				364AAC881FA2CAAF00FF2953 /* PinCollectionViewCell.swift in Sources */,
-				3638A4F21FA72ACB00B10650 /* GPX.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

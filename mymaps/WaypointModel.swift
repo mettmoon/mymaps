@@ -33,15 +33,23 @@ extension String {
 struct Waypoint:xmlProtocol {
     var coordinate:CLLocationCoordinate2D
     var date:Date?
-    var name:String = ""
+    var name:String?
     var desc:String?
     var type:WaypointType?
-    
-    func getXMLString() -> String {
-        var string:String = ""
+    init(coordinate:CLLocationCoordinate2D, date:Date? = nil, name:String? = nil, desc:String? = nil, type:WaypointType? = nil){
+        self.coordinate = coordinate
+        self.date = date
+        self.name = name
+        self.desc = desc
+        self.type = type
         
-        string += "<wpt lat=\"\(coordinate.latitude)\" lon=\"\(coordinate.longitude)\">"
-        string += "<name>\(name)</name>"
+    }
+    func getXMLString(tagName:String) -> String {
+        var string:String = ""
+        string += "<\(tagName) lat=\"\(coordinate.latitude)\" lon=\"\(coordinate.longitude)\">"
+        if let name = name {
+            string += "<name>\(name)</name>"
+        }
         if let desc = desc {
         string += "<desc>\(desc)</desc>"
         }
@@ -51,7 +59,7 @@ struct Waypoint:xmlProtocol {
         if let type = type {
             string += "<type>\(type.name)</type>"
         }
-        string += "</wpt>"
+        string += "</\(tagName)>"
         return string
     }
     

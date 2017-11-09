@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct GPX:xmlProtocol {
+struct GPX {
     var gpxScheme:String = "<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" creator=\"MotionXGPSFull 24.2 Build 5063R64\">"
     var defaultScheme:String = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
     func getXMLString() -> String {
@@ -22,7 +22,12 @@ struct GPX:xmlProtocol {
         }
         
         for waypoint in self.waypoints ?? [] {
-            result.appendXML(waypoint.getXMLString())
+            result.appendXML(waypoint.getXMLString(tagName: "wpt"))
+        }
+        if let tracks = self.tracks, tracks.count > 0 {
+            for track in tracks {
+                result.appendXML(track.getXMLString(tagName: "trk"))
+            }
         }
         result.appendXML("</gpx>")
         
@@ -30,7 +35,7 @@ struct GPX:xmlProtocol {
     }
     var name:String?
     var desc:String?
-//    var tracks:[Track]?
+    var tracks:[Track]?
     var waypoints:[Waypoint]?
 //    var routes:[Route]?
 //    var metadata:Metadata?

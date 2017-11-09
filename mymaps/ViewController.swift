@@ -15,6 +15,7 @@ import FileBrowser
 class ViewController: UIViewController{
     var pins:[MMPin] = []
     var savedAnnotation:[MMAnnotation] = []
+    var tracks:[Track]?
     @IBOutlet weak var myLocationButton: UIButton!
     @IBOutlet weak var pinCollectionView: UICollectionView!
     @IBOutlet weak var verticalLineLC: NSLayoutConstraint!
@@ -41,8 +42,8 @@ class ViewController: UIViewController{
             waypoints.append(waypoint)
         }
         gpx.waypoints = waypoints
-        for polyline in self.coordinates ?? [] {
-            
+        if let tracks = self.tracks, tracks.count > 0 {
+            gpx.tracks = tracks
         }
         print(gpx.getXMLString())
         if let url = self.exportToFileURL(gpx: gpx) {
@@ -183,6 +184,7 @@ class ViewController: UIViewController{
         var pins:[MMPin] = []
         pins.append(MMPin(name: "Pin", iconString: "📍"))
         pins.append(MMPin(name: "Good", iconString: "👍"))
+        pins.append(MMPin(name: "bad", iconString: "👎"))
         pins.append(MMPin(name: "Food", iconString: "🍕"))
         pins.append(MMPin(name: "Rest", iconString: "🚻"))
         pins.append(MMPin(name: "View", iconString: "🎑"))
@@ -218,13 +220,29 @@ class ViewController: UIViewController{
         self.coordinates?.append(coordinate)
         if let coordinates = self.coordinates, coordinates.count > 1 {
             let count = 2
-            let polyline = MKPolyline(coordinates: Array(coordinates.suffix(from: count)), count: count)
+            let polyline = MKPolyline(coordinates: Array(coordinates.suffix(from: coordinates.count - count)), count: count)
             self.mapView.add(polyline)
         }
-
+        
 
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let coordinates = coordinates, coordinates.count > 0 else {
+            self.coordinates = nil
+            return
+        }
+        
+        var tracks = self.tracks ?? []
+        
+        var trackPoints:[Waypoint] = []
+        for coordinate in coordinates {
+            trackPoints.append(Waypoint(coordinate: coordinate))
+        }
+        let trackSequnce = TrackSequnce(trackPoints: trackPoints, extensions: nil)
+        let track = Track(trackSequnce:trackSequnce)
+        tracks.append(track)
+        self.tracks = tracks
+        self.coordinates = nil
     }
     
 }
@@ -240,6 +258,7 @@ extension ViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(overlay: overlay)
+            print(overlay.coordinate)
             if let overlay = overlay as? MMPolyline {
                 renderer.strokeColor = overlay.color
                 renderer.lineWidth = overlay.lineWidth

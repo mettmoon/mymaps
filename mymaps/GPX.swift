@@ -30,7 +30,7 @@ extension String {
     }
 }
 
-class GPX: NSObject, CustomStringConvertible, XMLParserDelegate
+class GPX: NSObject, XMLParserDelegate
 {
     // MARK: - Public API
     var waypoints = [Waypoint]()
@@ -39,13 +39,13 @@ class GPX: NSObject, CustomStringConvertible, XMLParserDelegate
     
     typealias GPXCompletionHandler = (GPX?) -> Void
     
-    class func parse(url: URL, completionHandler: GPXCompletionHandler) {
+    class func parse(url: URL, completionHandler: @escaping GPXCompletionHandler) {
         GPX(url: url, completionHandler: completionHandler).parse()
     }
     
     // MARK: - Public Classes
     
-    class Track: Entry, CustomStringConvertible
+    class Track: Entry
     {
         var fixes = [Waypoint]()
         
@@ -55,7 +55,7 @@ class GPX: NSObject, CustomStringConvertible, XMLParserDelegate
         }
     }
     
-    class Waypoint: Entry, CustomStringConvertible
+    class Waypoint: Entry
     {
         var latitude: Double
         var longitude: Double
@@ -77,7 +77,7 @@ class GPX: NSObject, CustomStringConvertible, XMLParserDelegate
         }
     }
     
-    class Entry: NSObject, CustomStringConvertible
+    class Entry: NSObject
     {
         var links = [Link]()
         var attributes = [String:String]()

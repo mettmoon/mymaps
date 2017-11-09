@@ -9,7 +9,7 @@
 import Foundation
 
 protocol xmlProtocol {
-    func getXMLString() -> String
+    func getXMLString(tagName:String) -> String
 }
 
 
