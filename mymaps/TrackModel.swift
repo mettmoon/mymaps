@@ -9,7 +9,7 @@
 import Foundation
 import CoreLocation
 
-struct Track:xmlProtocol {
+struct Track {
     var name:String?
     var comment:String?
     var desc:String?
@@ -30,67 +30,19 @@ struct Track:xmlProtocol {
         self.extensions = extensions
         self.trackSequnce = trackSequnce
     }
-    func getXMLString(tagName:String) -> String {
-        var context:String = "<\(tagName)>"
-        if let name = self.name {
-            context.appendXML("<name>\(name)</name>")
-        }
-        if let comment = self.comment {
-            context.appendXML("<cmt>\(comment)</cmt>")
-        }
-        if let desc = self.desc {
-            context.appendXML("<desc>\(desc)</desc>")
-        }
-        if let source = self.source {
-            context.appendXML("<src>\(source)</src>")
-        }
-        if let link = self.link {
-            context.appendXML("<link>\(link.absoluteString)</link>")
-        }
-        if let number = self.number {
-            context.appendXML("<number>\(number)</number>")
-        }
-        if let type = self.type {
-            context.appendXML("<type>\(type)</type>")
-        }
-        if let extensions = self.extensions {
-            context.appendXML(extensions.getXMLString(tagName: "extensions"))
-        }
-        if let trkseq = self.trackSequnce?.getXMLString(tagName: "trkseg") {
-            context.appendXML(trkseq)
-        }
-        context.appendXML("</\(tagName)>")
-        return context
-    }
 }
 
-struct TrackSequnce:xmlProtocol {
+struct TrackSequnce {
     var trackPoints:[Waypoint]?
     var extensions:Extensions?
-    func getXMLString(tagName: String) -> String {
-        var context:String = ""
-        context.appendXML("<\(tagName)>")
-        if let trackPoints = self.trackPoints {
-            for trackPoint in trackPoints {
-                context.appendXML(trackPoint.getXMLString(tagName: "trkpt"))
-            }
-        }
-        if let extensions = self.extensions {
-            context.appendXML(extensions.getXMLString(tagName: "extensions"))
-        }
-        context.appendXML("</\(tagName)>")
-        return context
+    init(trackPoints:[Waypoint]? = nil, extensions:Extensions? = nil) {
+        self.trackPoints = trackPoints
+        self.extensions = extensions
     }
 }
-struct Extensions:xmlProtocol {
+struct Extensions {
     var parameters:[String : String]?
-    func getXMLString(tagName: String) -> String {
-        if let parameters = self.parameters, parameters.count > 0 {
-            for (k,v) in parameters {
-                
-            }
-        }
-        return ""
-    }
 }
+
+
 

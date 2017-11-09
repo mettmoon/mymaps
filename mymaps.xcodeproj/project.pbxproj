@@ -11,6 +11,13 @@
 		364AAC881FA2CAAF00FF2953 /* PinCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AAC871FA2CAAF00FF2953 /* PinCollectionViewCell.swift */; };
 		364AAC8B1FA2DFE600FF2953 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364AAC8A1FA2DFE600FF2953 /* CoreFoundation.framework */; };
 		364AAC8D1FA2DFF800FF2953 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364AAC8C1FA2DFF800FF2953 /* Foundation.framework */; };
+		368DFF4C1FB455AA007F676C /* RouteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368DFF4B1FB455AA007F676C /* RouteModel.swift */; };
+		368DFF4E1FB4563B007F676C /* LinkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368DFF4D1FB4563B007F676C /* LinkModel.swift */; };
+		368DFF501FB4574E007F676C /* MetadataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368DFF4F1FB4574E007F676C /* MetadataModel.swift */; };
+		368DFF521FB457B8007F676C /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368DFF511FB457B8007F676C /* PersonModel.swift */; };
+		368DFF541FB457E0007F676C /* EmailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368DFF531FB457E0007F676C /* EmailModel.swift */; };
+		368DFF561FB4580A007F676C /* CopyrightModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368DFF551FB4580A007F676C /* CopyrightModel.swift */; };
+		368DFF581FB4583D007F676C /* BoundsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368DFF571FB4583D007F676C /* BoundsModel.swift */; };
 		36D2C04E1FA853BA00503A64 /* GPXModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B379D1FA6BAD700CAE322 /* GPXModel.swift */; };
 		36D2C04F1FA853BA00503A64 /* WaypointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3684A0091FA3260600D16DC8 /* WaypointModel.swift */; };
 		36D2C0501FA853BA00503A64 /* TrackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3638A4EF1FA7287200B10650 /* TrackModel.swift */; };
@@ -33,6 +40,13 @@
 		364AAC8A1FA2DFE600FF2953 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		364AAC8C1FA2DFF800FF2953 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3684A0091FA3260600D16DC8 /* WaypointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointModel.swift; sourceTree = "<group>"; };
+		368DFF4B1FB455AA007F676C /* RouteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteModel.swift; sourceTree = "<group>"; };
+		368DFF4D1FB4563B007F676C /* LinkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkModel.swift; sourceTree = "<group>"; };
+		368DFF4F1FB4574E007F676C /* MetadataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataModel.swift; sourceTree = "<group>"; };
+		368DFF511FB457B8007F676C /* PersonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
+		368DFF531FB457E0007F676C /* EmailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailModel.swift; sourceTree = "<group>"; };
+		368DFF551FB4580A007F676C /* CopyrightModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyrightModel.swift; sourceTree = "<group>"; };
+		368DFF571FB4583D007F676C /* BoundsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundsModel.swift; sourceTree = "<group>"; };
 		847F9BC0659345035CD87860 /* Pods_mymaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mymaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA72B3265CCECA0FD0355501 /* Pods-mymaps.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mymaps.release.xcconfig"; path = "Pods/Target Support Files/Pods-mymaps/Pods-mymaps.release.xcconfig"; sourceTree = "<group>"; };
 		D005A0D61FA2128900AFC56D /* mymaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mymaps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,7 +119,14 @@
 				3638A4F11FA72ACB00B10650 /* GPX.swift */,
 				3684A0091FA3260600D16DC8 /* WaypointModel.swift */,
 				3638A4EF1FA7287200B10650 /* TrackModel.swift */,
+				368DFF4B1FB455AA007F676C /* RouteModel.swift */,
+				368DFF4D1FB4563B007F676C /* LinkModel.swift */,
 				362B379F1FA6BB1600CAE322 /* xmlProtocol.swift */,
+				368DFF4F1FB4574E007F676C /* MetadataModel.swift */,
+				368DFF571FB4583D007F676C /* BoundsModel.swift */,
+				368DFF551FB4580A007F676C /* CopyrightModel.swift */,
+				368DFF511FB457B8007F676C /* PersonModel.swift */,
+				368DFF531FB457E0007F676C /* EmailModel.swift */,
 				364AAC891FA2D54900FF2953 /* Bridge.h */,
 				D005A0DD1FA2128900AFC56D /* Main.storyboard */,
 				D005A0E01FA2128900AFC56D /* Assets.xcassets */,
@@ -250,13 +271,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				368DFF501FB4574E007F676C /* MetadataModel.swift in Sources */,
+				368DFF4E1FB4563B007F676C /* LinkModel.swift in Sources */,
+				368DFF521FB457B8007F676C /* PersonModel.swift in Sources */,
 				36D2C04F1FA853BA00503A64 /* WaypointModel.swift in Sources */,
 				36D2C0501FA853BA00503A64 /* TrackModel.swift in Sources */,
 				D005A0DC1FA2128900AFC56D /* ViewController.swift in Sources */,
+				368DFF4C1FB455AA007F676C /* RouteModel.swift in Sources */,
 				36D2C04E1FA853BA00503A64 /* GPXModel.swift in Sources */,
+				368DFF541FB457E0007F676C /* EmailModel.swift in Sources */,
 				36D2C0511FA853BA00503A64 /* xmlProtocol.swift in Sources */,
 				D005A0DA1FA2128900AFC56D /* AppDelegate.swift in Sources */,
 				364AAC881FA2CAAF00FF2953 /* PinCollectionViewCell.swift in Sources */,
+				368DFF581FB4583D007F676C /* BoundsModel.swift in Sources */,
+				368DFF561FB4580A007F676C /* CopyrightModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,18 +8,14 @@
 
 import Foundation
 struct GPX {
-    var gpxScheme:String = "<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" creator=\"MotionXGPSFull 24.2 Build 5063R64\">"
+    var gpxScheme:String {
+        return "<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"\(version)\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" creator=\"\(creator)\">"
+    }
     var defaultScheme:String = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
     func getXMLString() -> String {
         var result = ""
         result.appendXML(defaultScheme)
         result.appendXML(gpxScheme)
-        if let name = self.name {
-            result.appendXML("<name>\(name)</name>")
-        }
-        if let desc = self.desc {
-            result.appendXML("<desc>\(desc)</desc>")
-        }
         
         for waypoint in self.waypoints ?? [] {
             result.appendXML(waypoint.getXMLString(tagName: "wpt"))
@@ -33,13 +29,22 @@ struct GPX {
         
         return result
     }
-    var name:String?
-    var desc:String?
     var tracks:[Track]?
     var waypoints:[Waypoint]?
-//    var routes:[Route]?
-//    var metadata:Metadata?
-//    var extensions:[Extension]?
+    var routes:[Route]?
+    var metadata:Metadata?
+    var extensions:Extensions?
+    var creator:String
+    var version:String
+    init(creator:String, version:String = "1.1", tracks:[Track]? = nil, waypoints:[Waypoint]? = nil, routes:[Route]? = nil, metadata:Metadata? = nil, extensions:Extensions? = nil) {
+        self.creator = creator
+        self.version = version
+        self.tracks = tracks
+        self.waypoints = waypoints
+        self.routes = routes
+        self.metadata = metadata
+        self.extensions = extensions
+    }
 }
 
 extension String {

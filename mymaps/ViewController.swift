@@ -11,7 +11,47 @@ import MapKit
 import CoreLocation
 import Fuzi
 import FileBrowser
+class CustomActivity: UIActivity {
+    var customActivityType = ""
+    var activityName = ""
+    var activityImageName = ""
+    var customActionWhenTapped:( ()-> Void)!
 
+    init(title: String, imageName:String, performAction: @escaping (() -> ()) ) {
+        self.activityName = title
+        self.activityImageName = imageName
+        self.customActivityType = "Action \(title)"
+        self.customActionWhenTapped = performAction
+        super.init()
+    }
+    override var activityType: UIActivityType?{
+        return UIActivityType(rawValue:customActivityType)
+    }
+    override var activityTitle: String?{
+        return activityName
+    }
+    
+    override var activityImage: UIImage? {
+        return UIImage(named: activityImageName)
+    }
+    
+    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+        return true
+    }
+    
+    override func prepare(withActivityItems activityItems: [Any]) {
+        // nothing to prepare
+    }
+    
+    override var activityViewController: UIViewController?{
+        return nil
+    }
+    override func perform() {
+        customActionWhenTapped()
+    }
+
+    
+}
 class ViewController: UIViewController{
     var pins:[MMPin] = []
     var savedAnnotation:[MMAnnotation] = []
@@ -32,10 +72,7 @@ class ViewController: UIViewController{
         return self.mapView.annotations.flatMap({$0 as? MMAnnotation})
     }
     @IBAction func saveAllPinAction(_ sender: Any) {
-        var gpx = GPX()
-        let name = Date().iso8601
-        gpx.name = name
-        gpx.desc = ""
+        var gpx = GPX(creator: "mymaps")
         var waypoints:[Waypoint] = []
         for annotation in self.pinnedPins {
             let waypoint = Waypoint(coordinate: annotation.coordinate, date: annotation.pinnedDate, name: annotation.title ?? "", desc: nil, type: WaypointType(name: annotation.pin.name))
@@ -48,7 +85,10 @@ class ViewController: UIViewController{
         print(gpx.getXMLString())
         if let url = self.exportToFileURL(gpx: gpx) {
             let urlObjectsToShare = [url]
-            let activityVc = UIActivityViewController(activityItems: urlObjectsToShare, applicationActivities: nil)
+            let activity = CustomActivity(title: "저장", imageName: "btnBrandOpen", performAction: {
+                
+            })
+            let activityVc = UIActivityViewController(activityItems: urlObjectsToShare, applicationActivities: [activity])
             activityVc.popoverPresentationController?.sourceView = sender as? UIButton
             self.present(activityVc, animated: true, completion: nil)
         }
@@ -101,12 +141,15 @@ class ViewController: UIViewController{
     func updateDrawButton(){
         self.drawButton.setTitle(self.isDrawabled ? "이동" : "그리기", for: .normal)
     }
-    var coordinates:[CLLocationCoordinate2D]?
+    var coordinates:[CLLocationCoordinate2D]? {
+        guard let waypoints = self.waypoints else{return nil}
+        return waypoints.map({$0.coordinate})
+    }
+    var waypoints:[Waypoint]?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.pins = self.loadPins()
         self.pinCollectionView.reloadData()
-        self.coordinates = []
         self.updateDrawButton()
         if let coordinates = self.loadGPX() {
             let polyline = MMPolyline(coordinates: coordinates, count: coordinates.count)
@@ -210,14 +253,14 @@ class ViewController: UIViewController{
 
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.coordinates = []
+        self.waypoints = []
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !self.isDrawabled {return}
         guard let touch = touches.first, touches.count == 1 else { return }
         let point = touch.location(in: self.mapView)
         let coordinate = self.mapView.convert(point, toCoordinateFrom: self.mapView)
-        self.coordinates?.append(coordinate)
+        self.waypoints?.append(Waypoint(coordinate: coordinate, date:Date()))
         if let coordinates = self.coordinates, coordinates.count > 1 {
             let count = 2
             let polyline = MKPolyline(coordinates: Array(coordinates.suffix(from: coordinates.count - count)), count: count)
@@ -227,22 +270,18 @@ class ViewController: UIViewController{
 
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let coordinates = coordinates, coordinates.count > 0 else {
-            self.coordinates = nil
+        guard let waypoints = self.waypoints, waypoints.count > 0 else {
+            self.waypoints = nil
             return
         }
         
         var tracks = self.tracks ?? []
         
-        var trackPoints:[Waypoint] = []
-        for coordinate in coordinates {
-            trackPoints.append(Waypoint(coordinate: coordinate))
-        }
-        let trackSequnce = TrackSequnce(trackPoints: trackPoints, extensions: nil)
+        let trackSequnce = TrackSequnce(trackPoints: waypoints, extensions: nil)
         let track = Track(trackSequnce:trackSequnce)
         tracks.append(track)
         self.tracks = tracks
-        self.coordinates = nil
+        self.waypoints = nil
     }
     
 }
